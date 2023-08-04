@@ -9,6 +9,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletResponse;
 import thriftshop.thriftshopapi.Exceptions.InvalidInputException;
 import thriftshop.thriftshopapi.Model.Client;
 import thriftshop.thriftshopapi.Repository.ClientRepository;
@@ -30,7 +32,7 @@ public class ClientController {
 
     @PostMapping("/newAccount")
     public Client addClient(@RequestBody Client client){
-        Optional<Client> clientToFindOptional = this.clientRepository.findByEmail(client.getEmail());
+        Optional<Client> clientToFindOptional = this.clientRepository.findByEmailIgnoreCase(client.getEmail());
         if(clientToFindOptional.isPresent()){
             throw new InvalidInputException("There is an account already linked to this email.");
         }
@@ -39,8 +41,24 @@ public class ClientController {
         Client clientToSave = client;
         clientToSave.setPassword(password);
 
-        return this.clientRepository.save(clientToSave);
+        Client savedClient = this.clientRepository.save(clientToSave);
+        return savedClient;
     }
+
+    @PostMapping("/login")
+    public Client performLogin(@RequestBody Client client){
+        Optional<Client> clientToFindOptional = this.clientRepository.findByEmailIgnoreCase(client.getEmail());
+        if(!clientToFindOptional.isPresent()){
+            throw new InvalidInputException("No account available for the provided email.");
+        }
+        Client clientToCheck = clientToFindOptional.get();
+        
+        if(!bc.matches(client.getPassword(), clientToCheck.getPassword())){
+            throw new InvalidInputException("Incorrect password.");
+        }
+		return clientToCheck;
+	}
+    
 
 
 }
