@@ -1,5 +1,6 @@
 package thriftshop.thriftshopapi.Controller;
 
+
 import java.util.Optional;
 
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -9,8 +10,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import jakarta.servlet.http.Cookie;
-import jakarta.servlet.http.HttpServletResponse;
+
 import thriftshop.thriftshopapi.Exceptions.InvalidInputException;
 import thriftshop.thriftshopapi.Model.Client;
 import thriftshop.thriftshopapi.Repository.ClientRepository;
@@ -56,9 +56,13 @@ public class ClientController {
         if(!bc.matches(client.getPassword(), clientToCheck.getPassword())){
             throw new InvalidInputException("Incorrect password.");
         }
-		return clientToCheck;
+
+        return clientToCheck;
 	}
-    
+
+   
+
+
 
 
 }
