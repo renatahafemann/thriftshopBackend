@@ -1,5 +1,7 @@
 package thriftshop.thriftshopapi.Model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
@@ -14,6 +16,7 @@ import thriftshop.thriftshopapi.Enum.Category;
 
 @Entity
 @Getter @Setter @NoArgsConstructor @AllArgsConstructor
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class Product{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)  
