@@ -56,10 +56,6 @@ public class FavoritesController {
         Client clientToFind = this.clientRepository.findById(id).get();
         List <Favorites> clientFavorites = this.favoritesRepository.findByClient(clientToFind);
 
-        if(clientFavorites.isEmpty()){
-            throw new InvalidInputException("You don't have any favorites yet.");
-        }
-
         List<Product> favoritesProducts = new ArrayList<Product>(); 
         for (Favorites favorites : clientFavorites) {
             favoritesProducts.add(favorites.getFavoritesProducts());        
